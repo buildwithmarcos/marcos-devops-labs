@@ -1,7 +1,6 @@
 # marcos-devops-labs
-A repo that tracks your DevOps journey, notes, labs, experiments, and weekly roadmap.
 
-# Marcos DevOps Journey
+A repo that tracks my DevOps journey, notes, labs, experiments, and weekly roadmap.
 
 This repo tracks my transition from desktop engineering & automation into DevOps / Platform Engineering.
 
