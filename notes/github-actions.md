@@ -1,3 +1,7 @@
+# Week 2 – GitHub Actions
+
+Placeholder file for Week 2 GitHub Actions notes.
+This exists so I can practice branching, committing, pushing, and pull requests.
 
 ---
 
