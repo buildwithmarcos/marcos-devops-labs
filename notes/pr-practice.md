@@ -34,4 +34,4 @@ to practice a clean Pull Request workflow.
 
 - Create another PR with a slightly bigger change  
 - Add a GitHub Actions workflow to automate checks  
-- Begin Week 2 notes on CI/CD fundamentals  
+- Begin Week 2 notes on CI/CD fundamentals  # Test CI Trigger
