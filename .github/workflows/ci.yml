@@ -40,3 +40,10 @@ jobs:
       - name: Run PowerShell validation script
         shell: pwsh
         run: pwsh ./scripts/validate-repo.ps1 
+
+      - name: Call GitHub API with PAT via PowerShell
+        shell: pwsh
+        env:
+          GH_API_TOKEN: ${{ secrets.GH_API_TOKEN }}
+        run: pwsh ./scripts/github-api-selfcheck.ps1
+        
