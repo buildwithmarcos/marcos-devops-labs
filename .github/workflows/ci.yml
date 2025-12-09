@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  basic-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Show repo info
+        run: |
+          echo "Current branch:"
+          git branch --show-current
+          echo
+          echo "Files in repo:"
+          ls -R
+
+      - name: Basic validation
+        run: |
+          echo "Checking important files exist..."
+          test -f README.md
+          test -d notes
+          echo "All basic checks passed ✅"
