@@ -1,33 +1,52 @@
+# Fail the script if any command errors
+$ErrorActionPreference = 'Stop'
+
 Write-Host "=== Running Repository Validation ==="
 
-# Check README exists
-if (Test-Path "./README.md") {
+try {
+    # 1) Check README exists
+    if (-not (Test-Path -Path "./README.md" -PathType Leaf)) {
+        Write-Error "README.md missing ❌ (expected at ./README.md)"
+        exit 1
+    }
     Write-Host "README.md found ✔"
-} else {
-    Write-Host "README.md missing ❌"
-    exit 1
-}
 
-# Check notes folder exists
-if (Test-Path "./notes") {
+    # 2) Check notes folder exists
+    if (-not (Test-Path -Path "./notes" -PathType Container)) {
+        Write-Error "notes folder missing ❌ (expected at ./notes)"
+        exit 2
+    }
     Write-Host "notes folder found ✔"
-} else {
-    Write-Host "notes folder missing ❌"
-    exit 1
-}
 
-# List files inside notes
-Write-Host "`nNotes files:"
-Get-ChildItem "./notes" | ForEach-Object {
-    Write-Host " - $($_.Name)"
-}
+    # 3) Get note files
+    $notes = Get-ChildItem "./notes" -File -ErrorAction Stop
 
-# Print structured output (useful for CI logs)
-$status = @{
-    Timestamp = (Get-Date)
-    NotesCount = (Get-ChildItem "./notes").Count
-    Success = $true
-}
+    if (-not $notes -or $notes.Count -eq 0) {
+        Write-Error "No note files found in ./notes ❌"
+        exit 3
+    }
 
-Write-Host "`n=== Validation Complete ==="
-$status | ConvertTo-Json -Depth 3
+    Write-Host "`nNotes files:"
+    foreach ($n in $notes) {
+        Write-Host " - $($n.Name)"
+    }
+
+    # 4) Build a structured status object
+    $status = [pscustomobject]@{
+        Timestamp  = Get-Date
+        NotesCount = $notes.Count
+        Success    = $true
+    }
+
+    Write-Host "`n=== Validation Complete ==="
+    $status | ConvertTo-Json -Depth 3
+
+    # Explicit success exit
+    exit 0
+}
+catch {
+    # Catch any unexpected error
+    Write-Error "Unexpected validation error: $($_.Exception.Message)"
+    # 99 = generic/unexpected failure
+    exit 99
+}
